@@ -1,3 +1,5 @@
+import os
+from .settings import *
 from typer.testing import CliRunner
 
 from bizli import __version__
@@ -10,7 +12,11 @@ def test_version():
     assert __version__ == '0.1.0'
 
 
-def test_app():
-    result = runner.invoke(app, ["asd"])
+def test_init():
+    """
+    Test if init command creates directory correctly
+    """
+    result = runner.invoke(app, ["init"])
     assert result.exit_code == 0
-    assert "asd" in result.stdout
+    assert os.path.exists(MIGRATION_DIR)
+    cleanup()
