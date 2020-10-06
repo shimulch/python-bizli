@@ -3,6 +3,7 @@ import os
 import time
 import importlib.util
 from shutil import copyfile
+from collections import OrderedDict
 from bizli.db import DatabaseProvider
 
 app = typer.Typer()
@@ -23,7 +24,14 @@ def load_settings():
 
 def all_migrations(database: str):
     db_migration_dir = os.path.join(migration_dir, database)
-    return sorted(os.listdir(db_migration_dir))
+    migrations = OrderedDict()
+    for migration in sorted(os.listdir(db_migration_dir)):
+        migrations[migration] = {
+            'path': os.path.join(db_migration_dir, migration),
+            'up': os.path.join(db_migration_dir, migration, 'up.sql'),
+            'down': os.path.join(db_migration_dir, migration, 'down.sql'),
+        }
+    return migrations
 
 @app.command(name='init', help="Creates a migrations directory with all required files and folders.")
 def initialize():
@@ -49,12 +57,11 @@ def create_migration(name: str, database: str = 'default', settings_module: str 
 
 
 @app.command(name='migrate')
-def migrate():
+def migrate(database: str = 'default', schema: str = 'public'):
     settings = load_settings()
 
-    migrations = all_migrations('default')
-    print(migrations)
+    migrations = all_migrations(database)
 
-    db = DatabaseProvider(**settings.get_database_config('default'))
-    db.set_schema('public')
-    db.create_bizli_table()
+    db = DatabaseProvider(**settings.get_database_config(database))
+    db.set_schema(schema)
+    db.run_migrations(migrations)

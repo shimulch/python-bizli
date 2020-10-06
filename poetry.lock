@@ -148,6 +148,17 @@ version = "1.15.0"
 
 [[package]]
 category = "main"
+description = "Fast, Extensible Progress Meter"
+name = "tqdm"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*"
+version = "4.50.0"
+
+[package.extras]
+dev = ["py-make (>=0.1.0)", "twine", "argopt", "pydoc-markdown"]
+
+[[package]]
+category = "main"
 description = "Typer, build great CLIs. Easy to code. Based on Python type hints."
 name = "typer"
 optional = false
@@ -172,7 +183,7 @@ python-versions = "*"
 version = "0.2.5"
 
 [metadata]
-content-hash = "366aa382857cbf3e41677bf4ffcad530f8500d1c873c2654de19948e8c0a4ba1"
+content-hash = "63c0baf2c8c2e1848b0218576b41864fc638d507855a9e13e568a34dbd2d7343"
 lock-version = "1.0"
 python-versions = "^3.8"
 
@@ -293,6 +304,10 @@ pytest = [
 six = [
     {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},
     {file = "six-1.15.0.tar.gz", hash = "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"},
+]
+tqdm = [
+    {file = "tqdm-4.50.0-py2.py3-none-any.whl", hash = "sha256:2dd75fdb764f673b8187643496fcfbeac38348015b665878e582b152f3391cdb"},
+    {file = "tqdm-4.50.0.tar.gz", hash = "sha256:93b7a6a9129fce904f6df4cf3ae7ff431d779be681a95c3344c26f3e6c09abfa"},
 ]
 typer = [
     {file = "typer-0.3.2-py3-none-any.whl", hash = "sha256:ba58b920ce851b12a2d790143009fa00ac1d05b3ff3257061ff69dbdfc3d161b"},
