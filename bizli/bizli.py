@@ -1,6 +1,9 @@
 import typer
 import os
+import time
+import importlib.util
 from shutil import copyfile
+from bizli.db import DatabaseProvider
 
 app = typer.Typer()
 
@@ -8,17 +11,50 @@ bizli_template_path = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), 'template'
 )
 
+cwd = os.getcwd()
+migration_dir = os.path.join(cwd, 'migrations')
+settings_file = os.path.join(migration_dir, 'env.py')
+
+def load_settings():
+    spec = importlib.util.spec_from_file_location("bizli.settings", settings_file)
+    settings = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(settings)
+    return settings
+
+def all_migrations(database: str):
+    db_migration_dir = os.path.join(migration_dir, database)
+    return sorted(os.listdir(db_migration_dir))
 
 @app.command(name='init', help="Creates a migrations directory with all required files and folders.")
 def initialize():
-    cwd = os.getcwd()
-    migration_dir = os.path.join(cwd, 'migrations')
     os.mkdir(migration_dir)
     files_to_copy = os.listdir(bizli_template_path)
     for file in files_to_copy:
         copyfile(os.path.join(bizli_template_path, file), os.path.join(migration_dir, file))
 
 
-@app.command(name='new')
-def create_migration(name: str):
-    pass
+@app.command(name='create')
+def create_migration(name: str, database: str = 'default', settings_module: str = 'migrations.settings'):
+    new_migration_folder = '{}_{}'.format(int(time.time()), name.lower().replace(' ', '_'))
+    db_migration_dir = os.path.join(migration_dir, database, new_migration_folder)
+    up_file = os.path.join(db_migration_dir, 'up.sql')
+    down_file = os.path.join(db_migration_dir, 'down.sql')
+
+    if not os.path.exists(migration_dir):
+        typer.echo('Bizli is not initialized. Please run `bizli init` first.')
+
+    os.makedirs(db_migration_dir)
+    open(up_file, 'a').close()
+    open(down_file, 'a').close()
+
+
+@app.command(name='migrate')
+def migrate():
+    settings = load_settings()
+
+    migrations = all_migrations('default')
+    print(migrations)
+
+    db = DatabaseProvider(**settings.get_database_config('default'))
+    db.set_schema('public')
+    db.create_bizli_table()
