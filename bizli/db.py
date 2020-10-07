@@ -44,13 +44,8 @@ class DatabaseProvider:
     def calc_checksum(self, data):
         return hashlib.md5(data.encode("utf-8")).hexdigest()
 
-    def run_migrations(self, migrations: dict):
-
+    def get_last_migration(self):
         with self.conn.cursor() as cur:
-            cur.execute(self.change_schema())
-
-            cur.execute(self.create_bizli_table_sql())
-
             cur.execute(
                 f"""SELECT name from {MIGRATION_TABLE_NAME}
                     ORDER BY applied_at DESC LIMIT 1;
@@ -59,6 +54,16 @@ class DatabaseProvider:
             last_migration = None
             for row in cur.fetchall():
                 last_migration = row[0]
+            return last_migration
+
+    def run_migrations(self, migrations: dict):
+
+        with self.conn.cursor() as cur:
+            cur.execute(self.change_schema())
+
+            cur.execute(self.create_bizli_table_sql())
+
+            last_migration = self.get_last_migration()
 
             migrations_to_run = list(migrations.keys())
             already_migrated = []

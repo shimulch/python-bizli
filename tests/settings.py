@@ -8,4 +8,3 @@ MIGRATION_DIR = os.path.join(PLAYGROUND_DIR, 'migrations')
 def cleanup():
     if os.path.exists(MIGRATION_DIR):
         shutil.rmtree(MIGRATION_DIR)
-
