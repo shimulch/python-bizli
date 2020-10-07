@@ -10,7 +10,7 @@ authors = ["Shimul Chowdhury <shimul@opencraft.com>"]
 bizli = 'bizli:main'
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.6"
 typer = "^0.3.2"
 psycopg2-binary = "^2.8.6"
 mako = "^1.1.3"
