@@ -27,8 +27,7 @@ jobs:
 
     - name: Setup Poetry
       uses: Gr1N/setup-poetry@v3
-      env:
-        POETRY_VIRTUALENVS_CREATE: false
+      run: poetry config virtualenvs.create false --global
 
     - name: Install dependencies
       run: |
@@ -38,6 +37,6 @@ jobs:
       run: |
         make lint
 
-    - name: Test with pytest
-      run: |
-        make test
+    # - name: Test with pytest
+    #   run: |
+    #     make test
