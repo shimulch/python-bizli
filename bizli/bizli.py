@@ -57,10 +57,11 @@ def initialize():
     os.mkdir(migration_dir)
     files_to_copy = os.listdir(bizli_template_path)
     for file in files_to_copy:
-        copyfile(
-            os.path.join(bizli_template_path, file),
-            os.path.join(migration_dir, file)
-        )
+        if os.path.isfile(file):
+            copyfile(
+                os.path.join(bizli_template_path, file),
+                os.path.join(migration_dir, file)
+            )
 
 
 @app.command(name="create")
