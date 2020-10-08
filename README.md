@@ -24,5 +24,10 @@ To apply migrations to database -
 bizli migrate
 ```
 
+To apply rolllback migration from database -
+```
+bizli rollback
+```
+
 ### License
 MIT

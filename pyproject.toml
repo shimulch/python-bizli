@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bizli"
-version = "0.1.0rc1"
+version = "0.1.0rc2"
 description = ""
 license = "MIT"
 authors = ["Shimul Chowdhury <shimul@opencraft.com>"]
