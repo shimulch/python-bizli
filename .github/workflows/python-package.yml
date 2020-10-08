@@ -27,7 +27,8 @@ jobs:
 
     - name: Setup Poetry
       uses: Gr1N/setup-poetry@v3
-      run: poetry config virtualenvs.create false --global
+      run: |
+        poetry config virtualenvs.create false --global
 
     - name: Install dependencies
       run: |
