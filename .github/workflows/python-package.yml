@@ -36,7 +36,3 @@ jobs:
     - name: Lint
       run: |
         make lint
-
-    # - name: Test with pytest
-    #   run: |
-    #     make test
