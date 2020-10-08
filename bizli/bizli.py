@@ -1,9 +1,11 @@
-import typer
+import importlib.util
 import os
 import time
-import importlib.util
-from shutil import copyfile
 from collections import OrderedDict
+from shutil import copyfile
+
+import typer
+
 from bizli.db import DatabaseProvider
 
 app = typer.Typer()

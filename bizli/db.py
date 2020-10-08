@@ -1,7 +1,8 @@
 import hashlib
+
 import psycopg2
-from tqdm import tqdm
 import typer
+from tqdm import tqdm
 
 MIGRATION_TABLE_NAME = "bizli_migrations"
 
