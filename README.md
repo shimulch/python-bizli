@@ -1,5 +1,5 @@
 ## Bizli
-![Test](https://github.com/actions/hello-world/workflows/Test%20Bizli/badge.svg)
+![Test](https://github.com/shimulch/python-bizli/workflows/Test%20Bizli/badge.svg)
 
 ### Installation
 ```
