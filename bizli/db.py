@@ -80,7 +80,7 @@ class DatabaseProvider:
             ]
 
             if len(migrations_to_run) > 0:
-                for key in tqdm(migrations_to_run):
+                for key in migrations_to_run:
                     migration = migrations[key]
                     with open(migration["up"], "r") as f:
                         file_content = f.read()
@@ -93,6 +93,34 @@ class DatabaseProvider:
                                 self.calc_checksum(file_content),
                             ),
                         )
-                    typer.echo(f"{key} migrated.")
+                    typer.secho(f"Applied {key}.", fg=typer.colors.GREEN)
+
+        self.conn.commit()
+
+    def rollback(self, migrations: dict, number = 1):
+
+        typer.secho(f'Rolling back last {number} migrations.', fg=typer.colors.BLUE)
+
+        with self.conn.cursor() as cur:
+            cur.execute(self.change_schema())
+
+            cur.execute(self.create_bizli_table_sql())
+
+            while number > 0:
+                last_migration = self.get_last_migration()
+
+                if last_migration:
+                    migration = migrations.get(last_migration)
+
+                    with open(migration['down'], 'r') as f:
+                        cur.execute(f.read())
+
+                    cur.execute(f'DELETE FROM {MIGRATION_TABLE_NAME} WHERE name=%s', (last_migration,))
+                    typer.secho(f'{last_migration} rolled back.', fg=typer.colors.GREEN)
+                else:
+                    typer.secho('Nothing to rollback!', fg=typer.colors.BLUE)
+                    break
+
+                number -= 1
 
         self.conn.commit()

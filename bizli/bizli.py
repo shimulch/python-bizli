@@ -95,3 +95,14 @@ def migrate(database: str = "default", schema: str = "public"):
     db = DatabaseProvider(**settings.get_database_config(database))
     db.set_schema(schema)
     db.run_migrations(migrations)
+
+
+@app.command(name="rollback")
+def rollback(database: str = "default", schema: str = "public", n: int = 1):
+    settings = load_settings()
+
+    migrations = all_migrations(database)
+
+    db = DatabaseProvider(**settings.get_database_config(database))
+    db.set_schema(schema)
+    db.rollback(migrations)
