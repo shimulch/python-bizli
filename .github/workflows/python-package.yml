@@ -26,9 +26,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Setup Poetry
-      uses: Gr1N/setup-poetry@v3
-
-    - run: |
+      run: |
+        curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
         poetry config virtualenvs.create false
 
     - name: Install dependencies
