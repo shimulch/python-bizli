@@ -1,6 +1,7 @@
 ## Bizli
 ![Test](https://github.com/shimulch/python-bizli/workflows/Test%20Bizli/badge.svg)
-
+![pypi](https://img.shields.io/pypi/v/bizli)
+![license](https://img.shields.io/pypi/l/bizli)
 ### Installation
 ```
 pip install bizli

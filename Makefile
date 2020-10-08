@@ -6,9 +6,10 @@ lint:
 	poetry run flake8 bizli/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
 test:
-	poetry run pytest
+	poetry run coverage run -m pytest
 
 test.dev:
 	docker-compose up -d
-	poetry run pytest
+	make test
+	coverage html
 	docker-compose down
